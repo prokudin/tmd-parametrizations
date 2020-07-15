@@ -32,7 +32,9 @@ Sivers       Eur.Phys.J.A39:89-100,2009
 ***************
 Usage of the distributions:
 
-*************** Sivers distridution ***********************
+*************** 
+Sivers distridution
+***********************
 
 kt dependent: 
 
@@ -48,7 +50,9 @@ kt integrated (int d^2 kt) as described in various papers
 
 void SiversDistributionFirstMoment( struct PARTONCONTENT& partcontent,  PARAMETERS Params, double x, double Q2);
 
-*************** Collins FF ***********************
+*************** 
+Collins FF 
+***********************
 ATTENTION: produces quark --> pi^+ fragmentation
 
 kt dependent 
@@ -57,7 +61,9 @@ void CollinsDistributionKt( struct PARTONCONTENT& fragmentation, PARAMETERS Para
 kt integrated (int d^2 kt)
 void CollinsDistributionFirstMoment( struct PARTONCONTENT& fragmentation,  PARAMETERS Params, double z, double Q2);
 
-*************** Transversity ***********************
+*************** 
+Transversity 
+***********************
 kt dependent
 void TransversityDistributionKt( struct PARTONCONTENT& partcontent,  PARAMETERS Params, double x, double kt, double Q2);
 
