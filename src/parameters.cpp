@@ -1,6 +1,7 @@
-#ifndef __PARAMETERS_H_
+//
+// Author: Alexei Prokudin <prokudin@jlab.org>
+//
 #include "parameters.h"
-#endif
 
 #include <iostream>
 #include <fstream>
@@ -15,9 +16,6 @@ PARAMETERS::PARAMETERS() {
   Sivers.SetReadFile("sivers_parameters.dat");
   Sivers.ReadParameters();
 
-  Sivers.SetSetsReadFile("sivers_sets.dat");
-  Sivers.ReadSets();
-
   Transversity.SetReadFile("transversity_parameters.dat");
   Transversity.ReadParameters();
 
@@ -29,9 +27,6 @@ PARAMETERS::PARAMETERS() {
 
 
 
-
-
-
 //========================================================= parameters
 void SETS::ReadParameters(){
 
@@ -40,9 +35,7 @@ void SETS::ReadParameters(){
 
    if(!in) {
      cerr << "PARAMETERS: Unable to open file with parameters! " << FILE_READ << endl;
-   } else {
-     cout << "PARAMETERS: Open " << FILE_READ << endl;
-   }
+   } 
 
    in >>  parameters.a_up >>  errors.a_up;
    in >>  parameters.b_up >>  errors.b_up;
@@ -95,23 +88,23 @@ void SETS::UseMainSet(void){
 
 
 //========================================================= Constructor
-void SETS::SetReadFile(char* file){
+void SETS::SetReadFile(std::string file){
   FILE_READ = file;
 };
 
 //========================================================= Constructor
-void SETS::SetSetsReadFile(char* file){
+void SETS::SetSetsReadFile(std::string file){
   SETS_FILE_READ = file;
 };
 
 
 //========================================================= Constructor
-void SETS::SetWriteFile(char* file){
+void SETS::SetWriteFile(std::string file){
   FILE_WRITE = file;
 };
 
 //========================================================= Constructor
-void SETS::SetSetsWriteFile(char* file){
+void SETS::SetSetsWriteFile(std::string file){
   SETS_FILE_WRITE = file;
 };
 
@@ -123,9 +116,7 @@ void SETS::ReadSets(){
 
    if(!in) {
      cerr << "PARAMETERS: SETS: Unable to open file with parameters! " << SETS_FILE_READ << endl;
-   } else {
-     cout << "PARAMETERS: SETS: Open " << SETS_FILE_READ << endl;
-   }
+   } 
 
    for(int i = 0; i < set_number; i++){
    in >>  set[i].a_up;
@@ -265,11 +256,10 @@ void SETS::WriteSets(){
 
 // Evaluate min and max of a function f(x) on the parameters sets
 std::vector<double> SETS::MinMax( double (*f)(double ), double x ){
-  vector<double> r;
+  std::vector<double> r;
   double min, max;
 
-//   for(int k = 0; k < set_number; k++){
-  for(int k = 0; k < 2; k++){
+   for(int k = 0; k < set_number; k++){
 
     SETS::UseSet(k); // we do loop over all sets...
 
@@ -282,10 +272,10 @@ std::vector<double> SETS::MinMax( double (*f)(double ), double x ){
       max = sechenie;
     } else {
       if( (sechenie = (*f)( x ) ) > max ){
-	max = sechenie;
+	      max = sechenie;
       }
       if(  sechenie < min ){
-	min = sechenie;
+	      min = sechenie;
       }
     }
   }

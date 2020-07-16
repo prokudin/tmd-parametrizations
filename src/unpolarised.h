@@ -1,3 +1,14 @@
+//
+// Author: Alexei Prokudin <prokudin@jlab.org>
+//
+#ifndef __UNPOLARISED_H_
+#define __UNPOLARISED_H_
+#include "cfortran.h"
+//#include <string>
+#include <vector>
+#include <iostream>
+#include <cmath>
+
 /* * */
 /*       SUBROUTINE GRV98PA (ISET, X, Q2, UV, DV, US, DS, SS, GL) */
 /* ********************************************************************* */
@@ -26,45 +37,6 @@
 PROTOCCALLSFSUB9(GRV98PA,grv98pa,INT,DOUBLE,DOUBLE,PDOUBLE,PDOUBLE,PDOUBLE,PDOUBLE,PDOUBLE,PDOUBLE)
 #define GRV98PA(ISET, x, Q2, UV, DV, US, DS, SS, GL) \
 CCALLSFSUB9(GRV98PA,grv98pa,INT,DOUBLE,DOUBLE,PDOUBLE,PDOUBLE,PDOUBLE,PDOUBLE,PDOUBLE,PDOUBLE,ISET, x, Q2, UV, DV, US, DS, SS, GL)
-
-
-/* ********************************************************************* */
-/* *                                                                   * */
-/* *                    TRANSVERSITY DENSITIES                         * */
-/* *                                                                   * */
-/* *   INPUT:   ISET = number of the parton set :                      * */
-/* *              ISET = 1  NEXT-TO-LEADING ORDER  (MS-bar)            *  */
-/* *                        (DATA FILE 'transmaxnlo.grid' UNIT=11, TO  * */
-/* *                         BE DEFINED BY THE USER )                  *  */
-/* *              ISET = 2  LEADING ORDER                              *  */
-/* *                        (DATA FILE 'transmaxlo_new.grid' UNIT=22   * */
-/* *                                                                   * */
-/* *            X  = Bjorken-x       (between  1.E-4  and  1)          * */
-/* *            Q2 = scale in GeV**2 (between  0.8  and   1.E6)        * */
-/* *             (for values outside the allowed range the program     * */
-/* *              writes a warning and extrapolates to the x and       * */
-/* *              Q2 values requested)                                 * */
-/* *                                                                   * */
-/* *   OUTPUT:  U = x * DELTA u                                        *  */
-/* *            D = x * DELTA d                                        * */
-/* *            UB = x * UBAR                                          * */
-/* *            DB = x * DBAR                                          *    */
-/* *            ST = x * DELTA STRANGE = x * DELTA STRANGE(BAR)        *      */
-/* *                                                                   * */
-/* *          (  For the parton distributions always x times           * */
-/* *                   the distribution is returned   )                * */
-/* *                                                                   * */
-/* *                                                                   * */
-/* *   COMMON:  The main program or the calling routine has to have    * */
-/* *            a common block  COMMON / INTINI / IINI , and  IINI     * */
-/* *            has always to be zero when PARPOL is called for the    * */
-/* *            first time or when 'ISET' has been changed.            * */
-/* *                                                                   * */
-/* ********************************************************************* */
-PROTOCCALLSFSUB8(PARPOLT,parpolt,INT,DOUBLE,DOUBLE,PDOUBLE,PDOUBLE,PDOUBLE,PDOUBLE,PDOUBLE)
-#define  PARPOLT(ISET, X, Q2, U, D, UB, DB, ST) \
-CCALLSFSUB8(PARPOLT,parpolt,INT,DOUBLE,DOUBLE,PDOUBLE,PDOUBLE,PDOUBLE,PDOUBLE,PDOUBLE,ISET, X, Q2, U, D, UB, DB, ST)
-
 
 
 // FRAGMENTATION LIB
@@ -157,95 +129,82 @@ PROTOCCALLSFSUB9(DLIB,dlib,DOUBLE,DOUBLE,PVOID,INT,INT,INT,INT,INT,INT)
 	      Z,Q2,DFF,FFSET,FFORDER,IHADRON,ICHARGE,ICP,IPI)
 
 
-
 // Partonic content DIS
 struct PARTONCONTENT {
   double up,down,anti_up,anti_down,strange,anti_strange,charm,anti_charm,bottom,anti_bottom,top,anti_top,glu;
 };
 
-//**************************************************************************************
-//**************************          SIVERS      **************************************
-//========================================================= Sivers effect...x dependence
-double sivers_x_dependence(double x, double a, double b, double n);
 
-//========================================================= Sivers effect...
-void sivers(struct PARTONCONTENT& partcontent, PARAMETERS Params, double x );
+const  double eu               =  2./3.; // Up quark charge
+const  double ed               = -1./3.; // Down quark charge
+const  double es               = -1./3.; // Strange quark charge
+const double PI                = 3.1415926543; // Pi
+const double mpr               = 0.93827203 ; // the proton mass
+const double mdeuteron          = 1.875613/2.   ; // the deutron mass/2. !!!!!!!!!!!
+const double mneutron          = 0.93956536;    // the neutron mass
+const double mpion             = 0.13956995;	// Mass of pion
+const double mkaon             = 0.493667;	// Mass of kaon+-
+const  double alpha_em         =  1./137.035999679; // aplha_em0
+// Fragmentation
+// ffset   1,2,3 means K, KKP, BFGW
+// fforder 0,1 is LO, NLO(MSbar)
+// ihadron 1,2,3,4,5 is pi,K,h,p,n
+// icp     1,2,3 chooses between particle, anti-particle or sum of both 
+// ipi     1,2,3 is a flag for BFGW; inactive for K, KKP  
+// icharge 0,1,2,3 is 0,+,-,+&-
+const int pion       = 1;
+const int hadron     = 2;
+const int kaon       = 3;
+const int proton     = 4;
+const int deutron    = 5;
+const int neutron    = 6;
+const int antiproton = 7;
+
+const double positive    = +1.;
+const double negative    = -1.;
+const double neutral     =  0.;
+
+/// Possible targets
+enum TARGET_TYPE 
+{
+  PROTON  = 1,
+  DEUTERON,
+  NEUTRON,
+  ANTIPROTON
+};
+
+/// Possible hadrons
+enum HADRON_TYPE 
+{
+  PIPLUS = 1,
+  PIMINUS,
+  PIZERO,
+  KPLUS,
+  KMINUS,
+  KZERO,
+  HPLUS,
+  HMINUS,
+  HZERO
+};
+
+void Deutron( struct PARTONCONTENT& partcontent );
+void Neutron( struct PARTONCONTENT& partcontent );
+void Antiproton( struct PARTONCONTENT& partcontent );
+enum TARGET_TYPE getTarget(std::string target);
+double getTargetMass(std::string target);
+enum HADRON_TYPE getHadron(std::string hadron);
+
 
 //========================================================= Unpolarized partcontent
 void unpolarised(struct PARTONCONTENT& partcontent, double x, double Q2);
 
-//========================================================= Sivers partcontent
-void SiversDistribution( struct PARTONCONTENT& partcontent,  PARAMETERS Params, double x, double Q2);
+//========================================================= Unpolarised partcontent for all targets
+void UnpolarisedDistribution(std::string target, struct PARTONCONTENT& partcontent, double x, double Q2);
 
-//========================================================= Unpolarised partcontent
-void UnpolarisedDistribution( struct PARTONCONTENT& partcontent,  PARAMETERS Params, double x, double Q2);
-
-//========================================================= Sivers partcontent KT
-void SiversDistributionKt( struct PARTONCONTENT& partcontent,  PARAMETERS Params, double x, double kt, double Q2);
-
-//========================================================= Sivers partcontent First moment
-void SiversDistributionFirstMoment( struct PARTONCONTENT& partcontent,  PARAMETERS Params, double x, double Q2);
-
-//========================================================= Draw Sivers partcontent
-TCanvas* DrawSiversDistribution( struct PARTONCONTENT& partcontent,  PARAMETERS Params, double Q2);
-
-
-
-
-
-
-
-//**************************************************************************************
-//**************************          COLLINS     **************************************
-//========================================================= Collins effect...z dependence
-double collins_z_dependence(double z, double a, double b, double n);
-
-//========================================================= Fragmentation PI^+
+//========================================================= fragmentation functions for pi+
 void Fragmentation(struct PARTONCONTENT& fragmentation, double z, double Q2);
 
-//========================================================= Collins effect PI^+...
-void collins(struct PARTONCONTENT& fragmentation, PARAMETERS Params, double z);
+//========================================================= fragmentation functions for all hadrons
+void Fragmentation(std::string hadron, struct PARTONCONTENT& fragmentation, double z, double Q2);
 
-//========================================================= Collins partcontent
-void CollinsDistribution( struct PARTONCONTENT& fragmentation, PARAMETERS Params, double z, double Q2);
-
-//========================================================= Collins partcontent KT
-void CollinsDistributionKt( struct PARTONCONTENT& fragmentation, PARAMETERS Params, double z, double kt, double Q2);
-
-//========================================================= Collins partcontent First moment
-void CollinsDistributionFirstMoment( struct PARTONCONTENT& fragmentation,  PARAMETERS Params, double z, double Q2);
-
-//========================================================= Draw Collins partcontent
-TCanvas* DrawCollinsDistribution( struct PARTONCONTENT& fragmentation,  PARAMETERS Params, double Q2);
-
-
-
-
-
-
-
-
-
-//**************************************************************************************
-//**************************          TRANSVERSITY      ********************************
-//========================================================= Sivers effect...x dependence
-double transversity_x_dependence(double x, double a, double b, double n);
-
-//========================================================= Soffer Bound...
-void SofferBound(struct PARTONCONTENT& partcontent, double x, double Q2 );
-
-//========================================================= transversity
-void transversity(struct PARTONCONTENT& partcontent, PARAMETERS Params, double x );
-
-//========================================================= partcontent
-void TransversityDistribution( struct PARTONCONTENT& partcontent,  PARAMETERS Params, double x, double Q2);
-
-
-//========================================================= partcontent KT
-void TransversityDistributionKt( struct PARTONCONTENT& partcontent,  PARAMETERS Params, double x, double kt, double Q2);
-
-//========================================================= partcontent First moment
-void TransversityDistributionFirstMoment( struct PARTONCONTENT& partcontent,  PARAMETERS Params, double x, double Q2);
-
-//========================================================= Draw partcontent
-TCanvas* DrawTransversityDistribution( struct PARTONCONTENT& partcontent,  PARAMETERS Params, double Q2);
+#endif //#ifndef __UNPOLARISED_H_

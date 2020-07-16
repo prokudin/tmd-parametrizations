@@ -1,10 +1,11 @@
+//
+// Author: Alexei Prokudin <prokudin@jlab.org>
+//
 #ifndef  __PARAMETERS_H_
 #define  __PARAMETERS_H_ 
 
 #include <vector>
-
-using namespace std;
-
+#include <string>
 
 // Parameters class
 class VALUES {
@@ -56,17 +57,16 @@ class VALUES {
 
 
 
-const int set_number = 200; // we will generate 200 sets
-
+const int set_number = 200;
 
 
 class SETS{ // organize all sets here params, errors, sets of params
  private:
   VALUES main_parameters;
-  char* FILE_READ; // file to read parameters
-  char* SETS_FILE_READ; // file to read set parameters
-  char* FILE_WRITE; // file to write parameters
-  char* SETS_FILE_WRITE; // file to read set parameters
+  std::string FILE_READ; // file to read parameters
+  std::string SETS_FILE_READ; // file to read set parameters
+  std::string FILE_WRITE; // file to write parameters
+  std::string SETS_FILE_WRITE; // file to read set parameters
 
  public:
   SETS() {}; // constructor...
@@ -76,10 +76,10 @@ class SETS{ // organize all sets here params, errors, sets of params
   VALUES errors;
 
   VALUES set[set_number];
-  void SetReadFile(char* file);
-  void SetSetsReadFile(char* file);
-  void SetWriteFile(char* file);
-  void SetSetsWriteFile(char* file);
+  void SetReadFile(std::string file);
+  void SetSetsReadFile(std::string file);
+  void SetWriteFile(std::string file);
+  void SetSetsWriteFile(std::string file);
   void ReadParameters();
   void ReadSets();
   void WriteParameters();
@@ -87,7 +87,7 @@ class SETS{ // organize all sets here params, errors, sets of params
   void UseMainSet(void);
   void UseSet(int k);
 
-  vector<double> MinMax( double (*f)(double x), double x ); // evaluate min and max of a function f(x) on the parameters sets
+  std::vector<double> MinMax( double (*f)(double x), double x ); // evaluate min and max of a function f(x) on the parameters sets
 
 
 };
