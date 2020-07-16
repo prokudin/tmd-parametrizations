@@ -31,7 +31,7 @@ PARAMETERS::PARAMETERS() {
 void SETS::ReadParameters(){
 
    ifstream in;
-   in.open(FILE_READ); // fit 
+   in.open(FILE_READ.c_str()); // fit 
 
    if(!in) {
      cerr << "PARAMETERS: Unable to open file with parameters! " << FILE_READ << endl;
@@ -112,7 +112,7 @@ void SETS::SetSetsWriteFile(std::string file){
 void SETS::ReadSets(){
 
    ifstream in;
-   in.open(SETS_FILE_READ); // fit 
+   in.open(SETS_FILE_READ.c_str()); // fit 
 
    if(!in) {
      cerr << "PARAMETERS: SETS: Unable to open file with parameters! " << SETS_FILE_READ << endl;
@@ -160,7 +160,7 @@ void SETS::ReadSets(){
 void SETS::WriteParameters(){
 
    ofstream out;
-   out.open(FILE_WRITE); // fit 
+   out.open(FILE_WRITE.c_str()); // fit 
 
    if(!out) {
      cerr << "PARAMETERS: Unable to open file to write parameters! " << FILE_WRITE << endl;
@@ -208,7 +208,7 @@ void SETS::WriteParameters(){
 void SETS::WriteSets(){
 
    ofstream out;
-   out.open(SETS_FILE_WRITE); // fit 
+   out.open(SETS_FILE_WRITE.c_str()); // fit 
 
    if(!out) {
      cerr << "PARAMETERS: SETS: Unable to open file to write parameters! " << SETS_FILE_WRITE << endl;
