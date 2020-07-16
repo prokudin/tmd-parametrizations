@@ -11,13 +11,15 @@ unzip torino.zip
 make all
 
 
-
+***************
+Cleaning:
+make clean
 
 
 ***************
 Usage:
 
-test.exe 
+test.exe: 
 
 produces three plots on 
 
@@ -26,47 +28,55 @@ Transversity arXiv:0812.4366
 Sivers       Eur.Phys.J.A39:89-100,2009
 
 
+stfunctions.exe:
 
-
+prints values for structure functions
 
 ***************
-Usage of the distributions:
+Usage of the structure functions:
 
 *************** 
-Sivers distridution
+Sivers SF
 ***********************
 
-kt dependent: 
-
-void SiversDistributionKt( struct PARTONCONTENT& partcontent,  PARAMETERS Params, double x, double kt, double Q2);
-
-output is "partcontent" including all flavours 
-
-struct PARTONCONTENT {
-  double up,down,anti_up,anti_down,strange,anti_strange,charm,anti_charm,bottom,anti_bottom,top,anti_top,glu;
-};
-
-kt integrated (int d^2 kt) as described in various papers
-
-void SiversDistributionFirstMoment( struct PARTONCONTENT& partcontent,  PARAMETERS Params, double x, double Q2);
+/// FUT^sin(Phi_h - Phi_S) structure function
+/// Parameters: 
+/// target = proton, neutron, deuteron, antiproton
+/// hadron = pi+,pi-,pi0, k+,k-, k0, h+,h0, h0
+/// S energy in GeV2
+/// x
+/// z
+/// Q2 in GeV2
+/// PhT in GeV
+double TMD::FUTSivers(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT) 
 
 *************** 
-Collins FF 
+Collins SF
 ***********************
-ATTENTION: produces quark --> pi^+ fragmentation
-
-kt dependent 
-void CollinsDistributionKt( struct PARTONCONTENT& fragmentation, PARAMETERS Params, double z, double kt, double Q2);
-
-kt integrated (int d^2 kt)
-void CollinsDistributionFirstMoment( struct PARTONCONTENT& fragmentation,  PARAMETERS Params, double z, double Q2);
+ 
+/// FUT^sin(Phi_h + Phi_S) structure function
+/// Parameters: 
+/// target = proton, neutron, deuteron, antiproton
+/// hadron = pi+,pi-,pi0, k+,k-, k0, h+,h0, h0
+/// S energy in GeV2
+/// x
+/// z
+/// Q2 in GeV2
+/// PhT in GeV
+double TMD::FUTCollins(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)
 
 *************** 
-Transversity 
+Unpolarised ST
 ***********************
-kt dependent
-void TransversityDistributionKt( struct PARTONCONTENT& partcontent,  PARAMETERS Params, double x, double kt, double Q2);
 
-kt integrated (int d^2 kt)
-void TransversityDistributionFirstMoment( struct PARTONCONTENT& partcontent,  PARAMETERS Params, double x, double Q2);
-
+/// FUU unpolarised structure function
+/// Parameters: 
+/// target = proton, neutron, deuteron, antiproton
+/// hadron = pi+,pi-,pi0, k+,k-, k0, h+,h0, h0
+/// S energy in GeV2
+/// x
+/// z
+/// Q2 in GeV2
+/// PhT in GeV
+double TMD::FUU(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)
+ 
