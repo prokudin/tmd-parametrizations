@@ -7,18 +7,18 @@ Let me know if any bug is present / improvement of the code is welcome.
 ***************
 Installation:
 
-"make all"
+```make all```
 
 
 ***************
 Cleaning:
-"make clean"
+```make clean```
 
 
 ***************
 Usage:
 
-"test.exe" 
+```test.exe``` 
 
 produces three plots on 
 
@@ -27,7 +27,7 @@ Transversity arXiv:0812.4366
 Sivers       Eur.Phys.J.A39:89-100,2009
 
 
-"stfunctions.exe"
+```stfunctions.exe```
 
 prints values for structure functions
 
