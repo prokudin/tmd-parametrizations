@@ -83,7 +83,7 @@ Collins SF
 double TMD::FUTCollins(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)
 
 *************** 
-Unpolarised ST
+Unpolarised SF
 ***********************
 
 /// FUU unpolarised structure function
