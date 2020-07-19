@@ -32,10 +32,10 @@ Sivers       Eur.Phys.J.A39:89-100,2009
 prints values for structure functions
 
 ***************
-Please cite #Anselmino:2008jk#
+Please cite **Anselmino:2008jk**
 https://inspirehep.net/literature/806038
 
-and *Anselmino:2008sga* 
+and **Anselmino:2008sga** 
 https://inspirehep.net/literature/786122
 
 ***************
