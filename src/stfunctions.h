@@ -24,20 +24,19 @@ class TMD
 
     double Sum(PARTONCONTENT& Target, PARTONCONTENT& Produced);
 
+    PARTONCONTENT SIDIS(PARTONCONTENT& Target, PARTONCONTENT& Produced);
+
+    double SIDIS_SUM(PARTONCONTENT& out);
+
+    PARTONCONTENT FUUparton(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT);
     double FUU(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT);
 
+    PARTONCONTENT FUTSiversparton(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT);
     double FUTSivers(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT);
 
+    PARTONCONTENT FUTCollinsparton(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT);
     double FUTCollins(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT);
 
 };
-
-// double Sum(PARTONCONTENT& Target, PARTONCONTENT& Produced);
-
-// double FUU(std::string & target, std::string & hadron, PARAMETERS& Params, double S, double x, double z, double Q2, double PhT);
-
-// double FUTSivers(std::string & target, std::string & hadron, PARAMETERS& Params, double S, double x, double z, double Q2, double PhT);
-
-// double FUTCollins(std::string & target, std::string & hadron, PARAMETERS& Params, double S, double x, double z, double Q2, double PhT);
 
 #endif // #ifndef __STFUNCTIONS_H_

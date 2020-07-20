@@ -129,11 +129,32 @@ PROTOCCALLSFSUB9(DLIB,dlib,DOUBLE,DOUBLE,PVOID,INT,INT,INT,INT,INT,INT)
 	      Z,Q2,DFF,FFSET,FFORDER,IHADRON,ICHARGE,ICP,IPI)
 
 
-// Partonic content DIS
+/// Partonic content:
+/// up,down,anti_up,anti_down,strange,anti_strange,charm,anti_charm,gluon;
 struct PARTONCONTENT {
   double up,down,anti_up,anti_down,strange,anti_strange,charm,anti_charm,bottom,anti_bottom,top,anti_top,glu;
 };
 
+
+inline PARTONCONTENT product(double a, PARTONCONTENT b){
+  PARTONCONTENT c;
+
+  c.up          = a * b.up;
+  c.down        = a * b.down;
+  c.anti_up     = a * b.anti_up;
+  c.anti_down   = a * b.anti_down;
+  c.strange     = a * b.strange;
+  c.anti_strange= a * b.anti_strange;
+  c.charm       = a * b.charm;
+  c.anti_charm  = a * b.anti_charm;
+  c.bottom      = a * b.bottom;
+  c.anti_bottom = a * b.anti_bottom;
+  c.top         = a * b.top;
+  c.anti_top    = a * b.anti_top;
+  c.glu         = a * b.glu;
+
+  return c;
+}
 
 const  double eu               =  2./3.; // Up quark charge
 const  double ed               = -1./3.; // Down quark charge

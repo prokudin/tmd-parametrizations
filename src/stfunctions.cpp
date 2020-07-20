@@ -6,6 +6,41 @@
 #include "transversity.h"
 #include "collins.h"
 
+// components e_q * e_q * q(x) * D(z)
+PARTONCONTENT TMD::SIDIS(PARTONCONTENT& Target, PARTONCONTENT& Produced)
+{    
+    PARTONCONTENT out; 
+    
+    out.up = eu*eu * Target.up     *   Produced.up;
+    out.down =   ed*ed * Target.down   *   Produced.down;
+    out.anti_up =   eu*eu * Target.anti_up  *   Produced.anti_up;
+    out.anti_down =   ed*ed * Target.anti_down*   Produced.anti_down;
+    out.strange =   es*es * Target.strange    *   Produced.strange;
+    out.anti_strange =   es*es * Target.anti_strange *   Produced.anti_strange; 
+    out.charm = 0.;
+    out.anti_charm = 0.;
+    out.bottom = 0.;
+    out.anti_bottom = 0.;
+    out.top = 0.;
+    out.anti_top = 0.;
+    out.glu = 0.;
+
+    return out;
+} 
+
+// sum e_q * e_q * q(x) * D(z)
+double TMD::SIDIS_SUM(PARTONCONTENT& out)
+{    
+    return out.up +
+    out.down +
+    out.anti_up +
+    out.anti_down +
+    out.strange +
+    out.anti_strange +
+    out.charm +
+    out.anti_charm ;
+} 
+
 double TMD::Sum(PARTONCONTENT& Target, PARTONCONTENT& Produced)
 {    
     return 
@@ -34,11 +69,27 @@ TMD::TMD()
 /// PhT in GeV
 double TMD::FUTCollins(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)
 {
+ PARTONCONTENT out = FUTCollinsparton(target, hadron, S, x, z, Q2, PhT);
+ return  SIDIS_SUM(out); //  sum_q e_q * e_barq * q(x) * barq(x)
+}
+
+/// FUT^sin(Phi_h + Phi_S) structure function
+///  returns PARTONCONTENT structure: double up,down,anti_up,anti_down,strange,anti_strange,charm,anti_charm,bottom,anti_bottom,top,anti_top,glu;
+/// Parameters: 
+/// target = proton, neutron, deuteron, antiproton
+/// hadron = pi+,pi-,pi0, k+,k-, k0, h+,h0, h0
+/// S energy in GeV2
+/// x
+/// z
+/// Q2 in GeV2
+/// PhT in GeV
+PARTONCONTENT TMD::FUTCollinsparton(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)
+{
   double kt2_average  = Params.GetKt2Average();
   double ptq2_average = Params.GetPtq2Average();
   double Q = sqrt(Q2);
 
-  PARTONCONTENT Target, Produced;
+  PARTONCONTENT out, Target, Produced;
 
   double targetmass = getTargetMass(target);
 
@@ -53,7 +104,6 @@ double TMD::FUTCollins(std::string & target, std::string & hadron, double S, dou
   else
   {
     std::cerr << "Hadron " << hadron << " is not available for Collins FF." << std::endl;
-    return 0;
   }
   
   double collins_width = M2collins * ptq2_average/(ptq2_average + M2collins);
@@ -73,7 +123,9 @@ double TMD::FUTCollins(std::string & target, std::string & hadron, double S, dou
   
   CollinsFragmentation( hadron, Produced,  Params, z, Q2); // Partcontent for fragmentation TODO not working properly yet...
 
-  return  coeff_coll * Sum(Target, Produced); //  sum_q e_q * e_barq * q(x) * barq(x)
+  out = SIDIS(Target, Produced);
+
+  return  product(coeff_coll, out); //  e_q * e_barq * q(x) * barq(x) for each flavour
 }
 
 /// FUT^sin(Phi_h - Phi_S) structure function
@@ -87,11 +139,27 @@ double TMD::FUTCollins(std::string & target, std::string & hadron, double S, dou
 /// PhT in GeV
 double TMD::FUTSivers(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)
 {
+ PARTONCONTENT out = FUTSiversparton(target, hadron, S, x, z, Q2, PhT);
+return  SIDIS_SUM(out); //  sum_q e_q * e_barq * q(x) * barq(x)
+}
+
+/// FUT^sin(Phi_h - Phi_S) structure function
+///  returns PARTONCONTENT structure: double up,down,anti_up,anti_down,strange,anti_strange,charm,anti_charm,bottom,anti_bottom,top,anti_top,glu;
+/// Parameters: 
+/// target = proton, neutron, deuteron, antiproton
+/// hadron = pi+,pi-,pi0, k+,k-, k0, h+,h0, h0
+/// S energy in GeV2
+/// x
+/// z
+/// Q2 in GeV2
+/// PhT in GeV
+PARTONCONTENT TMD::FUTSiversparton(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)
+{
   double kt2_average  = Params.GetKt2Average();
   double ptq2_average = Params.GetPtq2Average();
   double Q = sqrt(Q2);
 
-  PARTONCONTENT Target, Produced;
+  PARTONCONTENT out, Target, Produced;
 
   double targetmass = getTargetMass(target);
 
@@ -110,7 +178,9 @@ double TMD::FUTSivers(std::string & target, std::string & hadron, double S, doub
   
   Fragmentation( hadron, Produced, z, Q2); // Partcontent for fragmentation
 
-  return  coeff_siv * Sum(Target, Produced); //  sum_q e_q * e_barq * q(x) * barq(x)
+  out = SIDIS(Target, Produced);
+
+  return  product(coeff_siv, out); //  e_q * e_barq * q(x) * barq(x) for each flavour
 }
 
 
@@ -125,11 +195,28 @@ double TMD::FUTSivers(std::string & target, std::string & hadron, double S, doub
 /// PhT in GeV
 double TMD::FUU(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)
 {
+  PARTONCONTENT out = FUUparton(target, hadron, S, x, z, Q2, PhT);
+  return  SIDIS_SUM(out); //  sum_q e_q * e_barq * q(x) * barq(x)
+}
+
+
+/// FUU unpolarised structure function contributions per quark
+///  returns PARTONCONTENT structure: double up,down,anti_up,anti_down,strange,anti_strange,charm,anti_charm,bottom,anti_bottom,top,anti_top,glu;
+/// Parameters: 
+/// target = proton, neutron, deuteron, antiproton
+/// hadron = pi+,pi-,pi0, k+,k-, k0, h+,h0, h0
+/// S energy in GeV2
+/// x
+/// z
+/// Q2 in GeV2
+/// PhT in GeV
+PARTONCONTENT TMD::FUUparton(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)
+{
   double kt2_average  = Params.GetKt2Average();
   double ptq2_average = Params.GetPtq2Average();
   double Q = sqrt(Q2);
 
-  PARTONCONTENT Target, Produced;
+  PARTONCONTENT out, Target, Produced;
 
   double targetmass = getTargetMass(target);
 
@@ -144,5 +231,7 @@ double TMD::FUU(std::string & target, std::string & hadron, double S, double x, 
   
   Fragmentation( hadron, Produced, z, Q2); // Partcontent for fragmentation
 
-  return  coeff_unp * Sum(Target, Produced); //  sum_q e_q * e_barq * q(x) * barq(x)
+  out = SIDIS(Target, Produced);
+
+  return  product(coeff_unp, out); //  e_q * e_barq * q(x) * barq(x) for each flavour
 }

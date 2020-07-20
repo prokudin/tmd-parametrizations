@@ -436,8 +436,6 @@ void Fragmentation(std::string hadron, struct PARTONCONTENT& fragmentation, doub
   fragmentation.glu           = dff[0+5];
   fragmentation.bottom        = dff[5+5];
   fragmentation.anti_bottom   = dff[-5+5];
-  fragmentation.top           = 0.;
-  fragmentation.anti_top      = 0.;
        
 
 }
