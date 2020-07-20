@@ -43,9 +43,42 @@ https://inspirehep.net/literature/786122
 ***************
 Usage of the structure functions:
 
+/// Partonic content:
+
+``struct PARTONCONTENT {
+  double up,down,anti_up,anti_down,strange,anti_strange,charm,anti_charm,bottom,anti_bottom,top,anti_top,glu;
+};``
+
+Functions names ending with ``parton`` return flavour decompositions and are to be called once and they will output ``struct PARTONCONTENT`` object
+
+Otherwise a double for structure functions is returned
+
 *************** 
 Sivers SF
 ***********************
+
+/// FUT^sin(Phi_h - Phi_S) structure function
+
+///  returns PARTONCONTENT structure: double up,down,anti_up,anti_down,strange,anti_strange,charm,anti_charm,bottom,anti_bottom,top,anti_top,glu;
+
+/// Parameters: 
+
+/// target = proton, neutron, deuteron, antiproton
+
+/// hadron = pi+,pi-,pi0, k+,k-, k0, h+,h0, h0
+
+/// S energy in GeV2
+
+/// x
+
+/// z
+
+/// Q2 in GeV2
+
+/// PhT in GeV
+
+``PARTONCONTENT TMD::FUTSiversparton(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)``
+
 
 /// FUT^sin(Phi_h - Phi_S) structure function
 
@@ -65,11 +98,34 @@ Sivers SF
 
 /// PhT in GeV
 
-double TMD::FUTSivers(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT) 
+``double TMD::FUTSivers(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)`` 
 
 *************** 
 Collins SF
 ***********************
+
+/// FUT^sin(Phi_h + Phi_S) structure function
+
+///  returns PARTONCONTENT structure: double up,down,anti_up,anti_down,strange,anti_strange,charm,anti_charm,bottom,anti_bottom,top,anti_top,glu;
+
+/// Parameters: 
+
+/// target = proton, neutron, deuteron, antiproton
+
+/// hadron = pi+,pi-,pi0, k+,k-, k0, h+,h0, h0
+
+/// S energy in GeV2
+
+/// x
+
+/// z
+
+/// Q2 in GeV2
+
+/// PhT in GeV
+
+``PARTONCONTENT TMD::FUTCollinsparton(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)``
+
  
 /// FUT^sin(Phi_h + Phi_S) structure function
 
@@ -89,11 +145,34 @@ Collins SF
 
 /// PhT in GeV
 
-double TMD::FUTCollins(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)
+``double TMD::FUTCollins(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)``
 
 *************** 
 Unpolarised SF
 ***********************
+
+/// FUU unpolarised structure function
+
+///  returns PARTONCONTENT structure: double up,down,anti_up,anti_down,strange,anti_strange,charm,anti_charm,bottom,anti_bottom,top,anti_top,glu;
+
+/// Parameters: 
+
+/// target = proton, neutron, deuteron, antiproton
+
+/// hadron = pi+,pi-,pi0, k+,k-, k0, h+,h0, h0
+
+/// S energy in GeV2
+
+/// x
+
+/// z
+
+/// Q2 in GeV2
+
+/// PhT in GeV
+
+``PARTONCONTENT TMD::FUTSiversparton(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)``
+
 
 /// FUU unpolarised structure function
 
@@ -113,5 +192,5 @@ Unpolarised SF
 
 /// PhT in GeV
 
-double TMD::FUU(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)
+``double TMD::FUU(std::string & target, std::string & hadron, double S, double x, double z, double Q2, double PhT)``
  
