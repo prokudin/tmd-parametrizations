@@ -130,7 +130,7 @@ PROTOCCALLSFSUB9(DLIB,dlib,DOUBLE,DOUBLE,PVOID,INT,INT,INT,INT,INT,INT)
 
 
 /// Partonic content:
-/// up,down,anti_up,anti_down,strange,anti_strange,charm,anti_charm,gluon;
+/// up,down,anti_up,anti_down,strange,anti_strange,charm,anti_charm,bottom,anti_bottom,top,anti_top,glu;
 struct PARTONCONTENT {
   double up,down,anti_up,anti_down,strange,anti_strange,charm,anti_charm,bottom,anti_bottom,top,anti_top,glu;
 };
