@@ -45,8 +45,6 @@ Usage of the structure functions:
 
 /// Partonic content:
 
-/// up,down,anti_up,anti_down,strange,anti_strange,charm,anti_charm,gluon;
-
 ``struct PARTONCONTENT {
   double up,down,anti_up,anti_down,strange,anti_strange,charm,anti_charm,bottom,anti_bottom,top,anti_top,glu;
 };``
