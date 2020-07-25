@@ -110,19 +110,19 @@ PARTONCONTENT TMD::FUTCollinsparton(std::string & target, std::string & hadron, 
   double dptav_numerator =  collins_width +  pow2(z)*Params.Transversity.parameters.m2_up ;
 
 // It is the cross section here
-//    double coeff_coll = (1.-y)*collins_width*PhT/(PI*pow2(dptav_numerator))*
+//    double coeff_coll = (1.-y)*collins_width*PhT/(pow2(dptav_numerator))*
 //      	exp( -PhT*PhT/dptav_numerator)/(Q*Q*Q*Q)*S*x* PhT * 2. * pow2(2. * PI)  * pow2( alpha_em ); 
 
 // Structure Function:
-  double coeff_coll = collins_width*PhT/(PI*pow2(dptav_numerator))*exp( -PhT*PhT/dptav_numerator); 
+  double coeff_coll = collins_width*PhT/(pow2(dptav_numerator))*exp( -PhT*PhT/dptav_numerator); 
 
   coeff_coll *=  sqrt( 2.*exp(1.)/ M2collins ) *collins_width/ptq2_average;
-  coeff_coll *=  0.5; // in Eq (20) there's sum over N(z) D(z) I use 2 N(z) D(z) in CollinsDistribution 
+  //coeff_coll *=  0.5; // in Eq (20) there's sum over N(z) D(z) I use 2 N(z) D(z) in CollinsDistribution  TODO check it????
 
   TransversityDistribution( target, Target, Params, x, Q2); // Partcontent for distribution
   
   CollinsFragmentation( hadron, Produced,  Params, z, Q2); // Partcontent for fragmentation TODO not working properly yet...
-
+ 
   out = SIDIS(Target, Produced);
 
   return  product(coeff_coll, out); //  e_q * e_barq * q(x) * barq(x) for each flavour

@@ -77,24 +77,32 @@ void CollinsDistribution( struct PARTONCONTENT& fragment, PARAMETERS& Params, do
 
 void CollinsFragmentation( std::string hadron, struct PARTONCONTENT& fragment, PARAMETERS& Params, double z, double Q2)
 {
-  CollinsDistribution( fragment, Params, z, Q2);
+  Fragmentation(fragment, z, Q2); // produce a pi+ by definition here
+  collins(fragment, Params, z);  
 
   double fav, unfav;
 
   switch( getHadron(hadron) ){
   case PIPLUS:
+      fav           = fragment.up;
+      unfav         = fragment.down;
+
+      fragment.anti_up      = unfav;
+      fragment.anti_down    = fav;
+      fragment.strange      = unfav;
+      fragment.anti_strange    = unfav;       
     break;
   case PIMINUS:
       fav           = fragment.up;
       unfav         = fragment.down;
         
       fragment.down    = fav;  
-
+      fragment.anti_up      = fav;
       // all the rest unfavoured:
-      fragment.up           = unfav; 
-      fragment.anti_up      = unfav;
+      fragment.up           = unfav;       
       fragment.anti_down    = unfav;    
-
+      fragment.strange      = unfav;
+      fragment.anti_strange    = unfav; 
     break;
   case PIZERO:
       fav           = 0.5 * (fragment.up + fragment.down);
@@ -109,7 +117,7 @@ void CollinsFragmentation( std::string hadron, struct PARTONCONTENT& fragment, P
     break;
   }
 
-  collins(fragment, Params, z);  
+  
 
 }
 

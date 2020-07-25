@@ -32,7 +32,6 @@
 #include "TPaveStats.h"
 #include "TText.h"
 
-
 /* ********************************************************************* */
 /* *                                                                   * */
 /* *                    TRANSVERSITY DENSITIES                         * */
