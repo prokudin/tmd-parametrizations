@@ -14,7 +14,7 @@ LDFLAGS = -O
 CFLAGS += $(ROOTCFLAGS)
 
 # In order for gfortran to work I need to include this
-FLIBS =  -L/usr/local/gfortran/lib/ -lgfortran
+FLIBS =  #-L/usr/local/gfortran/lib/ -lgfortran
 
 LIB = $(ROOTLIBS) $(FLIBS)
 
@@ -22,7 +22,7 @@ GRV98    = ./grv98.o
 TRANS_LO = ./transv_pdf.o
 FRAGMENT = fDSS.o pkhff.o kkp.o polin2.o polint.o grille_had_charged.o locate.o dlib.o akk.o
 
-OPT = -c -O3 -Wall -I./
+OPT = -c -O3 -Wall -Df2cFortran -I./
 
 OBJECTS = parameters.o unpolarised.o sivers.o transversity.o collins.o stfunctions.o \
 	$(GRV98) $(TRANS_LO) $(FRAGMENT)
@@ -57,31 +57,31 @@ stfunctions.o:	stfunctions.cpp
 	@echo "..................done Structure Functions."
 
 grv98.o: grv98.f
-	$(FF) -c grv98.f
+	$(FF) -std=legacy -Wargument-mismatch -c grv98.f
 
 toy.o: toy.f
-	$(FF) -c toy.f
+	$(FF) -std=legacy -c toy.f
 
 transv_pdf.o: transv_pdf.f
-	$(FF) -c transv_pdf.f
+	$(FF) -std=legacy -c transv_pdf.f
 
 fDSS.o:  fDSS.f
-	$(FF) -c fDSS.f
+	$(FF) -std=legacy -c fDSS.f
 
 dlib.o:  dlib.f
-	$(FF) -c dlib.f
+	$(FF) -std=legacy -c dlib.f
 
 pkhff.o: pkhff.f 
-	$(FF) -c pkhff.f
+	$(FF) -std=legacy -c pkhff.f
 
 kkp.o: kkp.f
-	$(FF) -c kkp.f
+	$(FF) -std=legacy -c kkp.f
 
 polin2.o: polin2.f 
-	$(FF) -c polin2.f
+	$(FF) -std=legacy -c polin2.f
 
 polint.o: polint.f 
-	$(FF) -c polint.f
+	$(FF) -std=legacy -c polint.f
 
 grille_had_charged.o:  grille_had_charged.f
 	$(FF) -c grille_had_charged.f

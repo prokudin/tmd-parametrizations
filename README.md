@@ -2,7 +2,12 @@ Author: Alexei Prokudin,
 prokudin@jlab.org
 
 Let me know if any bug is present / improvement of the code is welcome.
+***************
+On Jefferson Lab farm use
 
+```source /site/12gev_phys/softenv.csh  2.4```
+
+to initialise ROOT
 
 ***************
 Installation:
